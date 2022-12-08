@@ -5,8 +5,11 @@ parameters:
     sylius.security.new_api_route: "/new-api"
     sylius.security.new_api_regex: "^%sylius.security.new_api_route%"
 
+sylius_user:
+    encoder: argon2i
+
 security:
-    always_authenticate_before_granting: true
+    enable_authenticator_manager: false
     providers:
         sylius_admin_user_provider:
             id: sylius.admin_user_provider.email_or_name_based
@@ -14,7 +17,7 @@ security:
             chain:
                 providers: [sylius_api_shop_user_provider, sylius_api_admin_user_provider]
 
-    encoders:
+    password_hashers:
         Sylius\Component\User\Model\UserInterface: argon2i
     firewalls:
         oauth_token:
@@ -26,7 +29,6 @@ security:
             provider: sylius_admin_user_provider
             fos_oauth: true
             stateless: true
-            anonymous: true
 
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
