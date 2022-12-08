@@ -96,7 +96,7 @@ jobs:
 
             -
                 name: Install PHP dependencies
-                run: composer install --no-interaction --no-scripts
+                run: composer install --no-interaction
 
             -
                 name: Get Yarn cache directory
@@ -118,7 +118,9 @@ jobs:
 
             -
                 name: Build assets
-                run: (cd tests/Application && yarn encore prod)
+                run: |
+                    (cd tests/Application && bin/console assets:install public -vvv)
+                    (cd tests/Application && yarn encore prod)
 
             -   name: Check out database schema update
                 run: |
